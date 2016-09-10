@@ -5,7 +5,9 @@ import { AppComponent }  from './app.component';
 import { Login } from './login/login.component';
 import {Logger} from "./util/logger.service";
 import { HttpModule }    from '@angular/http';
-// import { routing }              from './app.routing';
+import { routing,
+    appRoutingProviders } from './app.routing';
+import { HomePageComponent } from './login/home.page.component'
 
 
 @NgModule({
@@ -13,14 +15,16 @@ import { HttpModule }    from '@angular/http';
         BrowserModule,
         FormsModule,
         HttpModule,
+        routing
     ],
     declarations: [
         AppComponent,
         Login,
-        
+        HomePageComponent
     ],
     providers: [
-        Logger
+        Logger,
+        appRoutingProviders
     ],
     //     UserService,
     //     { provide: APP_CONFIG, useValue: USER_DI_CONFIG }

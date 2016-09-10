@@ -4,6 +4,7 @@
 import {Component} from '@angular/core';
 import {User} from  '../domain/user';
 import {LoginService} from '../service/login-service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'login-page',
@@ -15,15 +16,19 @@ export class Login {
     //user = User;
     user = new User('', '');
     loginService;
+    router;
     foundUser = false;
     submitted = false;
-    constructor(loginService: LoginService){
+    constructor(loginService: LoginService, router: Router){
         this.loginService = loginService;
+        this.router = router;
     }
     onSubmit() {
-        //this.user.userName = 'sadsds';
         this.foundUser = this.loginService.validateUser(this.user);
         this.submitted = true;
+        if(this.foundUser){
+            this.router.navigate(['success']);
+        }
     }
 
     get diagnostic() {

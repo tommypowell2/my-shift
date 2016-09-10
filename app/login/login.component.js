@@ -14,19 +14,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var user_1 = require('../domain/user');
 var login_service_1 = require('../service/login-service');
+var router_1 = require('@angular/router');
 var Login = (function () {
-    function Login(loginService) {
+    function Login(loginService, router) {
         this.title = 'Login';
         //user = User;
         this.user = new user_1.User('', '');
         this.foundUser = false;
         this.submitted = false;
         this.loginService = loginService;
+        this.router = router;
     }
     Login.prototype.onSubmit = function () {
-        //this.user.userName = 'sadsds';
         this.foundUser = this.loginService.validateUser(this.user);
         this.submitted = true;
+        if (this.foundUser) {
+            this.router.navigate(['success']);
+        }
     };
     Object.defineProperty(Login.prototype, "diagnostic", {
         get: function () {
@@ -41,7 +45,7 @@ var Login = (function () {
             providers: [login_service_1.LoginService],
             templateUrl: 'app/login/login.component.html'
         }), 
-        __metadata('design:paramtypes', [login_service_1.LoginService])
+        __metadata('design:paramtypes', [login_service_1.LoginService, router_1.Router])
     ], Login);
     return Login;
 }());

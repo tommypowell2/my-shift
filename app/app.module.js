@@ -15,7 +15,8 @@ var app_component_1 = require('./app.component');
 var login_component_1 = require('./login/login.component');
 var logger_service_1 = require("./util/logger.service");
 var http_1 = require('@angular/http');
-// import { routing }              from './app.routing';
+var app_routing_1 = require('./app.routing');
+var home_page_component_1 = require('./login/home.page.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -25,13 +26,16 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
+                app_routing_1.routing
             ],
             declarations: [
                 app_component_1.AppComponent,
                 login_component_1.Login,
+                home_page_component_1.HomePageComponent
             ],
             providers: [
-                logger_service_1.Logger
+                logger_service_1.Logger,
+                app_routing_1.appRoutingProviders
             ],
             //     UserService,
             //     { provide: APP_CONFIG, useValue: USER_DI_CONFIG }
