@@ -17,6 +17,8 @@ var logger_service_1 = require("./util/logger.service");
 var http_1 = require('@angular/http');
 var app_routing_1 = require('./app.routing');
 var home_page_component_1 = require('./login/home.page.component');
+var loggedin_guard_component_1 = require("./login/loggedin.guard.component");
+var login_service_1 = require("./service/login-service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -35,7 +37,9 @@ var AppModule = (function () {
             ],
             providers: [
                 logger_service_1.Logger,
-                app_routing_1.appRoutingProviders
+                app_routing_1.appRoutingProviders,
+                loggedin_guard_component_1.LoggedInGuard,
+                login_service_1.LoginService
             ],
             //     UserService,
             //     { provide: APP_CONFIG, useValue: USER_DI_CONFIG }

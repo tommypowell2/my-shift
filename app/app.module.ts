@@ -8,6 +8,8 @@ import { HttpModule }    from '@angular/http';
 import { routing,
     appRoutingProviders } from './app.routing';
 import { HomePageComponent } from './login/home.page.component'
+import {LoggedInGuard} from "./login/loggedin.guard.component";
+import {LoginService} from "./service/login-service";
 
 
 @NgModule({
@@ -25,6 +27,9 @@ import { HomePageComponent } from './login/home.page.component'
     providers: [
         Logger,
         appRoutingProviders
+        ,
+        LoggedInGuard,
+        LoginService
     ],
     //     UserService,
     //     { provide: APP_CONFIG, useValue: USER_DI_CONFIG }

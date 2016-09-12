@@ -5,6 +5,8 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HomePageComponent} from "./login/home.page.component";
 import {Login} from "./login/login.component";
+import {LoggedInGuard} from "./login/loggedin.guard.component";
+
 
 const appRoutes: Routes = [
     {
@@ -18,7 +20,8 @@ const appRoutes: Routes = [
     },
     {
         path: 'success',
-        component: HomePageComponent
+        component: HomePageComponent,
+        canActivate: [LoggedInGuard]
     }
 ];
 
