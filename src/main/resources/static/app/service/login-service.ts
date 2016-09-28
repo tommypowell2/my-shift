@@ -3,7 +3,6 @@
  */
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-// import localStorage from 'localStorage';
 import { USERS }     from './mock-users';
 import {User} from "../domain/user";
 import {Logger} from "../util/logger.service";
@@ -19,18 +18,28 @@ export class LoginService {
 
     validateUser(user: User) {
         this.loggedIn = false;
-        for(var userKey in USERS){
-            var userFromList = USERS[userKey];
-            if(user.username == userFromList.username && user.password == userFromList.password){
-                this.loggedIn= true;
-                localStorage.setItem('auth_token', 'token');
-                this.logger.log('Login attempt succeeded  for '+user.username);
-            }
-        }
-        if(!this.loggedIn){
-            this.logger.log('Login attempt failed for '+user.username);
-        }
-        return this.loggedIn;
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        return this.http
+            .post(
+                '/login',
+                JSON.stringify({ user }),
+                { headers }
+            )
+            .map(res => res.json())
+            .map((res) => {
+                if (res.success) {
+                    localStorage.setItem('auth_token', res.auth_token);
+                    this.loggedIn = true;
+                }
+                this.loggedIn = true;
+                return res.success;
+            });
+        // if(!this.loggedIn){
+        //     this.logger.log('Login attempt failed for '+user.username);
+        // }
+        // return this.loggedIn;
     }
 
     isLoggedIn() {

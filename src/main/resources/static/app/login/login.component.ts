@@ -23,7 +23,10 @@ export class Login {
         this.router = router;
     }
     onSubmit() {
+
         this.foundUser = this.loginService.validateUser(this.user);
+        alert(this.foundUser);
+
         this.submitted = true;
         if(this.foundUser){
             this.router.navigate(['success']);
