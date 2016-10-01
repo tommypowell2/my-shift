@@ -1,9 +1,9 @@
 /**
  * Created by tpowell on 9/4/16.
  */
-import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { USERS }     from './mock-users';
+import {Injectable} from '@angular/core';
+import {Http, Headers} from '@angular/http';
+import {USERS}     from './mock-users';
 import {User} from "../domain/user";
 import {Logger} from "../util/logger.service";
 
@@ -11,12 +11,13 @@ import {Logger} from "../util/logger.service";
 export class LoginService {
 
     private loggedIn = false;
-    constructor(private logger: Logger, private http: Http){
+
+    constructor(private logger:Logger, private http:Http) {
         this.logger = logger;
         this.loggedIn = !!localStorage.getItem('auth_token');
     }
 
-    validateUser(user: User) {
+    validateUser(user:User) {
         this.loggedIn = false;
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -24,8 +25,8 @@ export class LoginService {
         return this.http
             .post(
                 '/login',
-                JSON.stringify({ user }),
-                { headers }
+                JSON.stringify({user}),
+                {headers}
             )
             .map(res => res.json())
             .map((res) => {
@@ -36,10 +37,6 @@ export class LoginService {
                 this.loggedIn = true;
                 return res.success;
             });
-        // if(!this.loggedIn){
-        //     this.logger.log('Login attempt failed for '+user.username);
-        // }
-        // return this.loggedIn;
     }
 
     isLoggedIn() {
