@@ -26,12 +26,12 @@ public class LoginController {
     public String login(HttpServletRequest request) {
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
-//        if (StringUtils.isBlank(userName) || StringUtils.isBlank(password))
-//            return "Please provide valid login credentials";
-//        boolean validated = loginService.validateUser(userName, password);
-//        if(!validated){
-//            return "Please provide valid login credentials";
-//        }
+        if (StringUtils.isBlank(userName) || StringUtils.isBlank(password))
+            return "Please provide valid login credentials";
+        boolean validated = loginService.validateUser(userName, password);
+        if(!validated){
+            return "Please provide valid login credentials";
+        }
         return "true";
     }
 }

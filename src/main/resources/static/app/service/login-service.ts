@@ -3,9 +3,10 @@
  */
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
-import {USERS}     from './mock-users';
+//import {USERS}     from './mock-users';
 import {User} from "../domain/user";
 import {Logger} from "../util/logger.service";
+import { Observable } from "rxjs/Rx"
 
 @Injectable()
 export class LoginService {

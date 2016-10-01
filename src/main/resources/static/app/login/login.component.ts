@@ -4,7 +4,7 @@
 import {Component} from '@angular/core';
 import {User} from  '../domain/user';
 import {LoginService} from '../service/login-service';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'login-page',
@@ -18,19 +18,27 @@ export class Login {
     router;
     foundUser = false;
     submitted = false;
-    constructor(loginService: LoginService, router: Router){
+
+    constructor(loginService:LoginService, router:Router) {
         this.loginService = loginService;
         this.router = router;
     }
+
     onSubmit() {
 
-        this.foundUser = this.loginService.validateUser(this.user);
-        alert(this.foundUser);
-
         this.submitted = true;
-        if(this.foundUser){
-            this.router.navigate(['success']);
-        }
+        this.foundUser = this.loginService.validateUser(this.user)
+            .subscribe((result) => {
+                if (result) {
+                    this.router.navigate(['success']);
+                }
+            });
+        //alert(this.foundUser);
+
+
+        // if (this.foundUser) {
+        //     this.router.navigate(['success']);
+        // }
     }
 
     get diagnostic() {
