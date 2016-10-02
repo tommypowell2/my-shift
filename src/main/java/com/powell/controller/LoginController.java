@@ -27,7 +27,7 @@ public class LoginController {
 
     @RequestMapping("/login2")
     public String login(HttpServletRequest request) throws IOException {
-        User user = new Gson().fromJson(request.getReader(), User.class);
+        User user = getUser(request);
         String userName = user.getUsername();
         String password = user.getPassword();
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password))
@@ -37,5 +37,9 @@ public class LoginController {
             return "Please provide valid login credentials";
         }
         return "true";
+    }
+
+    protected User getUser(HttpServletRequest request) throws IOException {
+        return new Gson().fromJson(request.getReader(), User.class);
     }
 }
