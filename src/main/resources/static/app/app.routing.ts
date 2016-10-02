@@ -11,15 +11,15 @@ import {LoggedInGuard} from "./login/loggedin.guard.component";
 const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/#login',
         pathMatch: 'full'
     },
     {
-        path: 'login',
+        path: '#login',
         component: Login
     },
     {
-        path: 'success',
+        path: '#success',
         component: HomePageComponent,
         canActivate: [LoggedInGuard]
     }

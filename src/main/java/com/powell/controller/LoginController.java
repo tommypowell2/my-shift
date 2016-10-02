@@ -1,12 +1,15 @@
 package com.powell.controller;
 
+import com.powell.domain.User;
 import com.powell.service.LoginService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Created by tpowell on 9/24/16.
@@ -22,10 +25,11 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @RequestMapping("/login")
-    public String login(HttpServletRequest request) {
-        String userName = request.getParameter("username");
-        String password = request.getParameter("password");
+    @RequestMapping("/login2")
+    public String login(HttpServletRequest request) throws IOException {
+        User user = new Gson().fromJson(request.getReader(), User.class);
+        String userName = user.getUsername();
+        String password = user.getPassword();
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password))
             return "Please provide valid login credentials";
         boolean validated = loginService.validateUser(userName, password);

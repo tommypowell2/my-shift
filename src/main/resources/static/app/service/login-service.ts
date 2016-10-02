@@ -3,10 +3,10 @@
  */
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
-//import {USERS}     from './mock-users';
 import {User} from "../domain/user";
 import {Logger} from "../util/logger.service";
-import { Observable } from "rxjs/Rx"
+import { Observable } from "rxjs/Rx";
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LoginService {
@@ -18,23 +18,28 @@ export class LoginService {
         this.loggedIn = !!localStorage.getItem('auth_token');
     }
 
-    validateUser(user:User) {
+    validateUser(username:string, password:string) {
         this.loggedIn = false;
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-
         return this.http
             .post(
-                '/login',
-                JSON.stringify({user}),
+                '/login2',
+                JSON.stringify({username, password}),
                 {headers}
             )
             .map(res => res.json())
             .map((res) => {
                 if (res.success) {
+                    alert(res.success);
+
                     localStorage.setItem('auth_token', res.auth_token);
                     this.loggedIn = true;
+                } else {
+                    alert('fail')
                 }
+
+                alert(res.success);
                 this.loggedIn = true;
                 return res.success;
             });

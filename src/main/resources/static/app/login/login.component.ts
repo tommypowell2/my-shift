@@ -24,16 +24,16 @@ export class Login {
         this.router = router;
     }
 
-    onSubmit() {
-
+    login() {
         this.submitted = true;
-        this.foundUser = this.loginService.validateUser(this.user)
+        this.foundUser = this.loginService.validateUser(this.user.username, this.user.password)
             .subscribe((result) => {
+
                 if (result) {
-                    this.router.navigate(['success']);
+                    this.router.navigate(['#success']);
                 }
             });
-        //alert(this.foundUser);
+        
 
 
         // if (this.foundUser) {
