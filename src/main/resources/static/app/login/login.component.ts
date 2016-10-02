@@ -30,7 +30,7 @@ export class Login {
             .subscribe((result) => {
 
                 if (result) {
-                    this.router.navigate(['#success']);
+                    this.router.navigate(['success']);
                 }
             });
         

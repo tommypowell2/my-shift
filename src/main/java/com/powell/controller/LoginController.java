@@ -31,10 +31,10 @@ public class LoginController {
         String userName = user.getUsername();
         String password = user.getPassword();
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password))
-            return "Please provide valid login credentials";
+            return new Gson().toJson("Please provide valid login credentials");
         boolean validated = loginService.validateUser(userName, password);
         if(!validated){
-            return "Please provide valid login credentials";
+            return new Gson().toJson("Please provide valid login credentials");
         }
         return "true";
     }
