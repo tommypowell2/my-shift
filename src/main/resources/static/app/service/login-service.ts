@@ -2,11 +2,12 @@
  * Created by tpowell on 9/4/16.
  */
 import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
-import {User} from "../domain/user";
+import {Http, Headers, Response} from '@angular/http';
 import {Logger} from "../util/logger.service";
 import { Observable } from "rxjs/Rx";
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+declare function  fetch(url:string);
 
 @Injectable()
 export class LoginService {
@@ -18,31 +19,31 @@ export class LoginService {
         this.loggedIn = !!localStorage.getItem('auth_token');
     }
 
+    // validateUser(username:string, password:string) {
+    //
+    //             alert(res.success);
+    //             this.loggedIn = true;
+    //             return res.success;
+    //         });
+    // }
+
     validateUser(username:string, password:string) {
         this.loggedIn = false;
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http
+
+        const response =  this.http
             .post(
                 '/login2',
                 JSON.stringify({username, password}),
                 {headers}
             )
-            .map(res => res.json())
-            .map((res) => {
-                if (res.success) {
-                    alert(res.success);
+            .map((res:Response) => res.json());
+        return response;
+    }
 
-                    localStorage.setItem('auth_token', res.auth_token);
-                    this.loggedIn = true;
-                } else {
-                    alert('fail')
-                }
-
-                alert(res.success);
-                this.loggedIn = true;
-                return res.success;
-            });
+    setLoggedIn(loggedIn:boolean){
+        this.loggedIn = loggedIn;
     }
 
     isLoggedIn() {

@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class LoginControllerTest {
 
+    private final String expectedContent = "{\"message\":\"Please provide valid login credentials\"}";
     private LoginControllerOverride controller;
     private MockMvc mockMvc;
     @Mock
@@ -38,28 +39,28 @@ public class LoginControllerTest {
     @Test
     public void userNameIsEmpty() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        mockMvc.perform(get("/login2")).andExpect(content().string("\"Please provide valid login credentials\"")).andDo(print());
+        mockMvc.perform(get("/login2")).andExpect(content().json(expectedContent)).andDo(print());
     }
 
     @Test
     public void userNameIsNull() throws Exception {
         controller = new LoginControllerOverride(loginService, null, "");
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        mockMvc.perform(get("/login2")).andExpect(content().string("\"Please provide valid login credentials\"")).andDo(print());
+        mockMvc.perform(get("/login2")).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
     public void passwordIsEmpty() throws Exception {
         controller = new LoginControllerOverride(loginService, "test", "");
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        mockMvc.perform(get("/login2")).andExpect(content().string("\"Please provide valid login credentials\"")).andDo(print());
+        mockMvc.perform(get("/login2")).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
     public void passwordIsNull() throws Exception {
         controller = new LoginControllerOverride(loginService, "test", null);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        mockMvc.perform(get("/login2")).andExpect(content().string("\"Please provide valid login credentials\"")).andDo(print());
+        mockMvc.perform(get("/login2")).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
@@ -67,7 +68,7 @@ public class LoginControllerTest {
         controller = new LoginControllerOverride(loginService, "test", "password");
         when(loginService.validateUser(anyString(), anyString())).thenReturn(false);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        mockMvc.perform(get("/login2")).andExpect(content().string("\"Please provide valid login credentials\"")).andDo(print());
+        mockMvc.perform(get("/login2")).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
@@ -75,7 +76,7 @@ public class LoginControllerTest {
         controller = new LoginControllerOverride(loginService, "test", "password");
         when(loginService.validateUser(anyString(), anyString())).thenReturn(true);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        mockMvc.perform(get("/login2")).andExpect(content().string("true")).andDo(print());
+        mockMvc.perform(get("/login2")).andExpect(content().string("{\"message\":\"true\"}")).andDo(print());
     }
 }
 
