@@ -1,5 +1,7 @@
 package com.powell.service;
 
+import com.powell.dao.LoginDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +10,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LoginService {
+    private LoginDAO loginDAO;
+
+    @Autowired
+    public LoginService(LoginDAO loginDAO) {
+        if(loginDAO == null){
+            throw new NullPointerException("The DAO was not initialized");
+        }
+        this.loginDAO = loginDAO;
+    }
+
     public boolean validateUser(String userName, String password) {
-        return false;
+        return loginDAO.validateUser(userName, password);
     }
 }
