@@ -8,6 +8,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.SQLException;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -42,10 +43,9 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void validateUserReturnsTrueWhenUserFound(){
+    public void validateUserReturnsTrueWhenUserFound() throws SQLException {
         when(loginDAO.validateUser(anyString(), anyString())).thenReturn(true);
         LoginService loginService = new LoginService(loginDAO);
         assertEquals(true,loginService.validateUser("", ""));
     }
-
 }
