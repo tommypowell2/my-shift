@@ -31,6 +31,7 @@ export class LoginService {
         this.loggedIn = false;
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
+        headers.append('X-Requested-With', 'XMLHttpRequest');
 
         const response =  this.http
             .post(

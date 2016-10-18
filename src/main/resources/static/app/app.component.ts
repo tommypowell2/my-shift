@@ -11,5 +11,5 @@ import {Component} from '@angular/core';
     // ,    directives: [Login]
 })
 export class AppComponent {
-    title = 'My Shift';
+    title = 'Time Shift';
 }

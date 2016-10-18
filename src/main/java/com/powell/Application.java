@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"com.powell.controller", "com.powell.service", "com.powell.dao"})
+@ComponentScan(basePackages={"com.powell.*", "com.powell.service", "com.powell.dao", "com.powell.security", "com.powell.security.*"})
 public class Application {
 
     public static void main(String [] args){
