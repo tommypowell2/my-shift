@@ -40,7 +40,7 @@ export class Login {
             },
             () => {
             },
-            () => console.log("done")
+            () => console.log("Processing complete")
         );
     }
 

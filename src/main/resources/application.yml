@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5431/myshift
+    username: postgres
+    password:
+server:
+    port: 8080
+
+demo.security.jwt:
+  tokenExpirationTime: 15 # Number of minutes
+  refreshTokenExpTime: 60 # Minutes
+  tokenIssuer: http://localhost
+  tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
