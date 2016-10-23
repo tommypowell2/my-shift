@@ -11,11 +11,11 @@ import java.sql.SQLException;
  * -_-
  */
 @Service
-public class LoginService {
+public class AdminService {
     private LoginDAO loginDAO;
 
     @Autowired
-    public LoginService(LoginDAO loginDAO) {
+    public AdminService(LoginDAO loginDAO) {
         if (loginDAO == null) {
             throw new NullPointerException("The DAO was not initialized");
         }

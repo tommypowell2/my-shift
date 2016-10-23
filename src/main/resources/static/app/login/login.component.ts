@@ -31,7 +31,7 @@ export class Login {
         const response = this.loginService.validateUser(this.user.username, this.user.password);
         response.subscribe(
             reply => {
-                if (reply.message == 'true') {
+                if (reply.status == 200) {
                     this.foundUser = true;
                     localStorage.setItem('auth_token', reply.auth_token);
                     this.loginService.setLoggedIn(true);

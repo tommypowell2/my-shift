@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
  * Created by tpowell on 10/9/16.
  * -_-
  */
-public class LoginServiceTest {
+public class AdminServiceTest {
 
     @Mock
     LoginDAO loginDAO;
@@ -33,19 +33,19 @@ public class LoginServiceTest {
     @Test
     public void loginDAOIsNotNull() {
         expectedException.expect(NullPointerException.class);
-        new LoginService(null);
+        new AdminService(null);
     }
 
     @Test
     public void validateUserReturnsFalseWhenUserNotFound(){
-        LoginService loginService = new LoginService(loginDAO);
-        assertEquals(false,loginService.validateUser("", ""));
+        AdminService adminService = new AdminService(loginDAO);
+        assertEquals(false, adminService.validateUser("", ""));
     }
 
     @Test
     public void validateUserReturnsTrueWhenUserFound() throws SQLException {
         when(loginDAO.validateUser(anyString(), anyString())).thenReturn(true);
-        LoginService loginService = new LoginService(loginDAO);
-        assertEquals(true,loginService.validateUser("", ""));
+        AdminService adminService = new AdminService(loginDAO);
+        assertEquals(true, adminService.validateUser("", ""));
     }
 }

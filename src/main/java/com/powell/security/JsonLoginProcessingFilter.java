@@ -57,15 +57,15 @@ public class JsonLoginProcessingFilter extends AbstractAuthenticationProcessingF
         return this.getAuthenticationManager().authenticate(token);
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authResult);
-        SecurityContextHolder.setContext(context);
-        successHandler.onAuthenticationSuccess(request, response, authResult);
-        chain.doFilter(request, response);
-    }
+//    @Override
+//    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+//                                            Authentication authResult) throws IOException, ServletException {
+//        SecurityContext context = SecurityContextHolder.createEmptyContext();
+//        context.setAuthentication(authResult);
+//        SecurityContextHolder.setContext(context);
+//        successHandler.onAuthenticationSuccess(request, response, authResult);
+//        chain.doFilter(request, response);
+//    }
 
 //    @Override
 //    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,

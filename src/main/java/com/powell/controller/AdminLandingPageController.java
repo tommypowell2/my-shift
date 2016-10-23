@@ -1,7 +1,7 @@
 package com.powell.controller;
 
 import com.google.gson.JsonObject;
-import com.powell.service.LoginService;
+import com.powell.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +15,13 @@ import java.io.IOException;
  * -_-
  */
 @RestController
-public class LoginController {
+public class AdminLandingPageController {
 
-    private LoginService loginService;
+    private AdminService adminService;
 
     @Autowired
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public AdminLandingPageController(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @RequestMapping(value = "/success", produces = MediaType.APPLICATION_JSON_VALUE)

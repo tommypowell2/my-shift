@@ -19,14 +19,6 @@ export class LoginService {
         this.loggedIn = !!localStorage.getItem('auth_token');
     }
 
-    // validateUser(username:string, password:string) {
-    //
-    //             alert(res.success);
-    //             this.loggedIn = true;
-    //             return res.success;
-    //         });
-    // }
-
     validateUser(username:string, password:string) {
         this.loggedIn = false;
         let headers = new Headers();
@@ -38,8 +30,7 @@ export class LoginService {
                 '/login2',
                 JSON.stringify({username, password}),
                 {headers}
-            )
-            .map((res:Response) => res.json());
+            );
         return response;
     }
 
