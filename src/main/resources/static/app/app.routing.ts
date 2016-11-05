@@ -4,6 +4,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HomePageComponent} from "./login/home.page.component";
+import {RegistrationComponent} from "./registration/registration.component";
 import {Login} from "./login/login.component";
 import {LoggedInGuard} from "./login/loggedin.guard.component";
 
@@ -21,6 +22,11 @@ const appRoutes: Routes = [
     {
         path: 'success',
         component: HomePageComponent,
+        canActivate: [LoggedInGuard]
+    },
+    {
+        path: 'employeeRegistration',
+        component: RegistrationComponent,
         canActivate: [LoggedInGuard]
     }
 ];
