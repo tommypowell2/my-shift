@@ -1,6 +1,6 @@
 package com.powell.service;
 
-import com.powell.dao.LoginDAO;
+import com.powell.dao.AdminDAO;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 public class AdminServiceTest {
 
     @Mock
-    LoginDAO loginDAO;
+    AdminDAO adminDAO;
 
     @Before
     public void setUp(){
@@ -38,14 +38,14 @@ public class AdminServiceTest {
 
     @Test
     public void validateUserReturnsFalseWhenUserNotFound(){
-        AdminService adminService = new AdminService(loginDAO);
+        AdminService adminService = new AdminService(adminDAO);
         assertEquals(false, adminService.validateUser("", ""));
     }
 
     @Test
     public void validateUserReturnsTrueWhenUserFound() throws SQLException {
-        when(loginDAO.validateUser(anyString(), anyString())).thenReturn(true);
-        AdminService adminService = new AdminService(loginDAO);
+        when(adminDAO.validateUser(anyString(), anyString())).thenReturn(true);
+        AdminService adminService = new AdminService(adminDAO);
         assertEquals(true, adminService.validateUser("", ""));
     }
 }

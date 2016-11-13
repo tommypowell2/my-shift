@@ -14,11 +14,11 @@ import java.sql.SQLException;
  * -_-
  */
 @Repository
-public class LoginDAO {
+public class AdminDAO {
     private DataSource dataSource;
 
     @Autowired
-    public LoginDAO(DataSource dataSource) {
+    public AdminDAO(DataSource dataSource) {
         if (dataSource == null) {
             throw new NullPointerException("Datasource was not initialized");
         }

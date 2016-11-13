@@ -9,11 +9,13 @@ import {Employee} from '../domain/employee'
     // providers: [EmployeeRegistrationService],
     templateUrl: 'app/registration/registration.component.html'
 })
-export class RegistrationComponent {
-    title = 'Pleae register an employee';
+export class Registration {
+    title = 'Please register an employee';
     employee;
 
     register(){
+
+        console.log("register")
 
     }
 }

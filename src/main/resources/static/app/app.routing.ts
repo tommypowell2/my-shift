@@ -4,7 +4,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HomePageComponent} from "./login/home.page.component";
-import {RegistrationComponent} from "./registration/registration.component";
+import {Registration} from "./registration/registration.component";
 import {Login} from "./login/login.component";
 import {LoggedInGuard} from "./login/loggedin.guard.component";
 
@@ -26,7 +26,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'employeeRegistration',
-        component: RegistrationComponent,
+        component: Registration,
         canActivate: [LoggedInGuard]
     }
 ];

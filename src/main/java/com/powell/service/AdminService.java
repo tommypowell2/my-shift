@@ -1,6 +1,6 @@
 package com.powell.service;
 
-import com.powell.dao.LoginDAO;
+import com.powell.dao.AdminDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +12,19 @@ import java.sql.SQLException;
  */
 @Service
 public class AdminService {
-    private LoginDAO loginDAO;
+    private AdminDAO adminDAO;
 
     @Autowired
-    public AdminService(LoginDAO loginDAO) {
-        if (loginDAO == null) {
+    public AdminService(AdminDAO adminDAO) {
+        if (adminDAO == null) {
             throw new NullPointerException("The DAO was not initialized");
         }
-        this.loginDAO = loginDAO;
+        this.adminDAO = adminDAO;
     }
 
     public boolean validateUser(String userName, String password) {
         try {
-            return loginDAO.validateUser(userName, password);
+            return adminDAO.validateUser(userName, password);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
