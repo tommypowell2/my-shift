@@ -5,12 +5,14 @@ import com.powell.domain.EmployeeWrapper;
 import com.powell.domain.Employee;
 import com.powell.service.RegistrationService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by tpowell on 11/13/16.
@@ -18,6 +20,7 @@ import java.io.IOException;
  */
 @RestController
 public class EmployeeRegistrationController {
+    private final Logger LOGGER = Logger.getLogger(Employee.class);
     private final RegistrationService registrationService;
 
     @Autowired
@@ -32,8 +35,13 @@ public class EmployeeRegistrationController {
         if(validationError != null){
             return validationError;
         }
-        Long employeeID = registrationService.register(employee);
-        return "{messageType:\"success\", message: \"Registration successful\", employeeID:\""+employeeID+"\"}";
+        try {
+            registrationService.register(employee);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            return "{messageType:\"error\", message: \"Can not save user to database, possible duplicate user name.\"}";
+        }
+        return "{messageType:\"success\", message: \"Registration successful\", employeeID:\""+employee.getEmployeeID()+"\"}";
     }
 
     private Employee extractEmployee(HttpServletRequest request) throws IOException {

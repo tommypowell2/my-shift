@@ -1,11 +1,10 @@
 package com.powell.controller;
 
+import com.powell.dao.RegistrationDAO;
 import com.powell.domain.Employee;
 import com.powell.service.RegistrationService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,7 +12,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -27,12 +25,12 @@ public class EmployeeRegistrationControllerTest {
     private EmployeeRegistrationController controller;
     private MockMvc mockMvc;
 
-    @Mock
-    private RegistrationService registrationService;
+    private RegistrationServiceForTest registrationService;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
+        registrationService = new RegistrationServiceForTest(null);
         controller = new EmployeeRegistrationController(registrationService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
@@ -69,7 +67,17 @@ public class EmployeeRegistrationControllerTest {
     public void registerEmployee() throws Exception {
         String jsonMessage = "{employee: {firstName: \"test\", lastName: \"user\", userName: \"tuser\", position: \"Awesome Dev\"}}";
         String expectedContent = "{messageType:\"success\", message: \"Registration successful\", employeeID:\"1\"}";
-        when(registrationService.register(any(Employee.class))).thenReturn(new Long(1));
         mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
+    }
+}
+
+class RegistrationServiceForTest extends RegistrationService {
+
+    public RegistrationServiceForTest(RegistrationDAO registrationDAO) {
+        super(registrationDAO);
+    }
+
+    public void register(Employee employee) {
+        employee.setEmployeeID(1l);
     }
 }

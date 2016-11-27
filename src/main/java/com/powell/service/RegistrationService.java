@@ -1,7 +1,11 @@
 package com.powell.service;
 
 import com.powell.domain.Employee;
+import com.powell.dao.RegistrationDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 /**
  * Created by tpowell on 11/13/16.
@@ -9,7 +13,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RegistrationService {
-    public Long register(Employee employee) {
-        return null;
+
+    private RegistrationDAO registrationDAO;
+
+    @Autowired
+    public RegistrationService(RegistrationDAO registrationDAO) {
+        this.registrationDAO = registrationDAO;
+    }
+
+    public void register(Employee employee) throws SQLException {
+        registrationDAO.registerEmployee(employee);
     }
 }

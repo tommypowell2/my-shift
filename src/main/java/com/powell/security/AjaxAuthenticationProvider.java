@@ -7,6 +7,7 @@ import com.powell.security.domain.User;
 import com.powell.security.model.UserContext;
 import com.powell.security.service.DatabaseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -22,6 +23,7 @@ import org.springframework.util.Assert;
 
 
 @Component
+@Lazy
 public class AjaxAuthenticationProvider implements AuthenticationProvider {
     private  final BCryptPasswordEncoder encoder;
     private  final DatabaseUserService userService;
