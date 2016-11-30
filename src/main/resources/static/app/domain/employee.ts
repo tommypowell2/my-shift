@@ -3,8 +3,6 @@
  */
 
 export class Employee{
-    // username: '';
-    // password: '';
     constructor(public firstName:string , public lastName:string, public userName:string, public position:string ){
         
     }

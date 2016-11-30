@@ -5,13 +5,10 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {Employee} from  '../domain/employee';
-import {LoginService} from '../service/login-service';
 import {RegistrationService} from '../service/registration-service'
-import {Registration} from '../registration/registration.component'
 
 @Component({
     selector: 'home-page',
-    // providers: [Registration],
     templateUrl: 'app/login/home.page.component.html'
 })
 export class HomePageComponent {
