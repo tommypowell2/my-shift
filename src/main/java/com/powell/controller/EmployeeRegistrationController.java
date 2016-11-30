@@ -31,17 +31,17 @@ public class EmployeeRegistrationController {
     @RequestMapping("/registerEmployee")
     public String registerEmployee(HttpServletRequest request) throws IOException {
         Employee employee = extractEmployee(request);
-        String validationError = getValidationError(employee);
-        if(validationError != null){
-            return validationError;
+        String message = getValidationError(employee);
+        if (message == null) {
+            try {
+                registrationService.register(employee);
+                message = "{messageType:\"success\", message: \"Registration successful\", employeeID:\"" + employee.getEmployeeID() + "\"}";
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage());
+                message = "{messageType:\"error\", message: \"Can not save user to database, possible duplicate user name.\"}";
+            }
         }
-        try {
-            registrationService.register(employee);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return "{messageType:\"error\", message: \"Can not save user to database, possible duplicate user name.\"}";
-        }
-        return "{messageType:\"success\", message: \"Registration successful\", employeeID:\""+employee.getEmployeeID()+"\"}";
+        return message;
     }
 
     private Employee extractEmployee(HttpServletRequest request) throws IOException {
