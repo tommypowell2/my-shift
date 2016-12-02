@@ -1,0 +1,10 @@
+DROP TABLE Employee
+IF EXISTS;
+CREATE TABLE Employee (
+  employeeID INTEGER IDENTITY PRIMARY KEY,
+  FirstName  VARCHAR(255),
+  LastName   VARCHAR(255),
+  UserName   VARCHAR(255),
+  POSITION   VARCHAR(255),
+  UNIQUE (UserName)
+);
