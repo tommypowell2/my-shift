@@ -3,6 +3,7 @@ package com.powell.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powell.security.exception.AuthMethodNotSupportedException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +30,7 @@ public class JsonLoginProcessingFilter extends AbstractAuthenticationProcessingF
     private final AuthenticationSuccessHandler successHandler;
     private final AuthenticationFailureHandler failureHandler;
     private final ObjectMapper objectMapper;
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     public JsonLoginProcessingFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler,
                                         AuthenticationFailureHandler failureHandler, ObjectMapper objectMapper) {
