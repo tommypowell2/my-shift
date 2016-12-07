@@ -21,3 +21,9 @@ RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=acc
 ADD my-shift-1.0.0.jar .
 
 CMD java -jar my-shift-1.0.0.jar .
+
+#Example command to build this image
+#docker build -t myshift:beta .
+
+# Run the following after the database is up. You w
+#docker run --link myshiftDB:postgres --name myshifyApp -p 8080:8080  myshift:beta
