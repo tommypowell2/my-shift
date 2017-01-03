@@ -6,5 +6,6 @@ CREATE TABLE Employee (
   LastName   VARCHAR(255),
   UserName   VARCHAR(255),
   POSITION   VARCHAR(255),
+  CompanyID INTEGER,
   UNIQUE (UserName)
 );

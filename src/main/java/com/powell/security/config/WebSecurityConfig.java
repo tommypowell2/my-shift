@@ -1,6 +1,7 @@
 package com.powell.security.config;
 
 import com.powell.security.AjaxAuthenticationProvider;
+import com.powell.security.AjaxAwareAuthenticationSuccessHandler;
 import com.powell.security.JsonLoginProcessingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String NODE_MODULE_RESOURCES = "/node_modules/**";
 
     @Autowired
-    private AuthenticationSuccessHandler successHandler;
+    private AjaxAwareAuthenticationSuccessHandler successHandler;
     @Autowired
     private AuthenticationFailureHandler failureHandler;
     @Autowired
@@ -80,7 +81,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/systemjs.config.js",
                         "/typings/**",
                         "/*.css",
-                        "/*.json"
+                        "/*.json",
+                        "/registerAdmin",
+                        "/employeeRegistration"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()

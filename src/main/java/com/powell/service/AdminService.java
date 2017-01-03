@@ -22,12 +22,7 @@ public class AdminService {
         this.adminDAO = adminDAO;
     }
 
-    public boolean validateUser(String userName, String password) {
-        try {
-            return adminDAO.validateUser(userName, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public int getCompanyID(String userName) throws SQLException {
+        return adminDAO.getCompanyID(userName);
     }
 }

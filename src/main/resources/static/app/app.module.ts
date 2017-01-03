@@ -12,6 +12,8 @@ import { routing, appRoutingProviders } from './app.routing';
 import {LoggedInGuard} from "./login/loggedin.guard.component";
 import {LoginService} from "./service/login-service";
 import {RegistrationService} from './service/registration-service';
+import {AdminRegistration} from "./registration/registration.admin.component";
+import {EmployeeScheduleComponent} from "./scheduler/employee.schedule";
 
 @NgModule({
     imports: [
@@ -24,7 +26,9 @@ import {RegistrationService} from './service/registration-service';
         AppComponent,
         Login,
         HomePageComponent,
-        Registration
+        Registration,
+        AdminRegistration,
+        EmployeeScheduleComponent
     ],
     providers: [
         Logger,

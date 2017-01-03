@@ -37,47 +37,51 @@ public class EmployeeRegistrationControllerTest {
 
     @Test
     public void firstNameIsEmpty() throws Exception {
-        String jsonMessage = "{employee: {firstName: \"\", lastName: \"fdfd\", userName: \"fdfd\", position: \"Automation Engineer\"}}";
-        String expectedContent = "{messageType:\"error\", message: \"First name is not valid.\"}";
+        String jsonMessage = "{\"employee\": {\"firstName\": \"\", \"lastName\": \"fdfd\", \"userName\": \"fdfd\", \"position\": \"Automation Engineer\", \"companyID\":\"1\"}}";
+        String expectedContent = "{\"messageType\":\"error\", \"message\": \"First name is not valid.\"}";
         mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
     public void lastNameIsEmpty() throws Exception {
-        String jsonMessage = "{employee: {firstName: \"test\", lastName: \"\", userName: \"fdfd\", position: \"Automation Engineer\"}}";
-        String expectedContent = "{messageType:\"error\", message: \"Last name is not valid.\"}";
+        String jsonMessage = "{\"employee\": {\"firstName\": \"test\", \"lastName\": \"\", \"userName\": \"fdfd\", \"position\": \"Automation Engineer\", \"companyID\":\"1\"}}";
+        String expectedContent = "{\"messageType\":\"error\", \"message\": \"Last name is not valid.\"}";
         mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
     public void userNameIsEmpty() throws Exception {
-        String jsonMessage = "{employee: {firstName: \"test\", lastName: \"user\", userName: \"\", position: \"Automation Engineer\"}}";
-        String expectedContent = "{messageType:\"error\", message: \"User name is not valid.\"}";
+        String jsonMessage = "{\"employee\": {\"firstName\": \"test\", \"lastName\": \"user\", \"userName\": \"\", \"position\": \"Automation Engineer\", \"companyID\":\"1\"}}";
+        String expectedContent = "{\"messageType\":\"error\", \"message\": \"User name is not valid.\"}";
         mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
     public void positionIsEmpty() throws Exception {
-        String jsonMessage = "{employee: {firstName: \"test\", lastName: \"user\", userName: \"tuser\", position: \"\"}}";
-        String expectedContent = "{messageType:\"error\", message: \"Position is not valid.\"}";
+        String jsonMessage = "{\"employee\": {\"firstName\": \"test\", \"lastName\": \"user\", \"userName\": \"tuser\", \"position\": \"\", \"companyID\":\"1\"}}";
+        String expectedContent = "{\"messageType\":\"error\", \"message\": \"Position is not valid.\"}";
+        mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
+    }
+
+    @Test
+    public void companyIDIsZero() throws Exception {
+        String jsonMessage = "{\"employee\": {\"firstName\": \"test\", \"lastName\": \"user\", \"userName\": \"tuser\", \"position\": \"Awesome Dev\", \"companyID\":\"0\"}}";
+        String expectedContent = "{\"messageType\":\"error\", \"message\": \"Company ID is not valid.\"}";
+        mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
+    }
+
+    @Test
+    public void companyIDIsLessThanZero() throws Exception {
+        String jsonMessage = "{\"employee\": {\"firstName\": \"test\", \"lastName\": \"user\", \"userName\": \"tuser\", \"position\": \"Awesome Dev\", \"companyID\":\"-1\"}}";
+        String expectedContent = "{\"messageType\":\"error\", \"message\": \"Company ID is not valid.\"}";
         mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
     }
 
     @Test
     public void registerEmployee() throws Exception {
-        String jsonMessage = "{employee: {firstName: \"test\", lastName: \"user\", userName: \"tuser\", position: \"Awesome Dev\"}}";
-        String expectedContent = "{messageType:\"success\", message: \"Registration successful\", employeeID:\"1\"}";
+        String jsonMessage = "{\"employee\": {\"firstName\": \"test\", \"lastName\": \"user\", \"userName\": \"tuser\", \"position\": \"Awesome Dev\", \"companyID\":\"1\"}}";
+        String expectedContent = "{\"messageType\":\"success\", \"message\": \"Registration successful\", \"employeeID\":\"1\"}";
         mockMvc.perform(post("/registerEmployee").contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonMessage)).andExpect(content().string(expectedContent)).andDo(print());
     }
 }
 
-class RegistrationServiceForTest extends RegistrationService {
-
-    public RegistrationServiceForTest(RegistrationDAO registrationDAO) {
-        super(registrationDAO);
-    }
-
-    public void register(Employee employee) {
-        employee.setEmployeeID(1l);
-    }
-}

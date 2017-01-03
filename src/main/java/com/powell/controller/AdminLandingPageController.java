@@ -1,5 +1,6 @@
 package com.powell.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.powell.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by tpowell on 9/24/16.
@@ -24,13 +26,13 @@ public class AdminLandingPageController {
         this.adminService = adminService;
     }
 
-    @RequestMapping(value = "/success", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String login(HttpServletRequest request) throws IOException {
-
-        JsonObject jsonObject = new JsonObject();
-        String key = "message";
-        String value = "true";
-        jsonObject.addProperty(key, value);
-        return jsonObject.toString();
+    @RequestMapping(value = "/getCompanyID")
+    public String getCompanyID(HttpServletRequest request) throws IOException, SQLException {
+        String userName = new Gson().fromJson(request.getReader(), JsonObject.class).get("username").getAsString();
+        int companyID = adminService.getCompanyID(userName);
+        if(companyID <= 0){
+            return "{\"error\":\"Could not find companyID\"}";
+        }
+        return "{\"companyID\":\""+companyID+"\"}";
     }
 }

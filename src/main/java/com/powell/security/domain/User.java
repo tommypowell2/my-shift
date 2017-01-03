@@ -1,5 +1,6 @@
 package com.powell.security.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,8 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="USERS")
-public class User {
+@Table(name="SHIFT_ADMIN_USERS")
+public class User implements Serializable {
     @Id @Column(name="ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,17 +25,27 @@ public class User {
     @Column(name="password")
     private String password;
 
+    @Column
+    private int companyID;
+
+    @Column
+    private boolean enabled;
+
     @OneToMany
     @JoinColumn(name="APP_USER_ID", referencedColumnName="ID")
     private List<UserRole> roles;
 
+    @OneToMany
+    @JoinColumn(name="USERNAME", referencedColumnName="USERNAME")
+    private List<Authority> userAuthorities;
+
     public User() { }
 
-    public User(Long id, String username, String password, List<UserRole> roles) {
+    public User(Long id, String username, String password, List<Authority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.userAuthorities = authorities;
     }
 
     public Long getId() {
@@ -49,7 +60,19 @@ public class User {
         return password;
     }
 
-    public List<UserRole> getRoles() {
-        return roles;
+    public int getCompanyID() {
+        return companyID;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+//    public List<UserRole> getRoles() {
+//        return roles;
+//    }
+
+    public List<Authority> getUserAuthorities() {
+        return userAuthorities;
     }
 }

@@ -1,5 +1,6 @@
 package com.powell.service;
 
+import com.powell.domain.Administrator;
 import com.powell.domain.Employee;
 import com.powell.dao.RegistrationDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,9 @@ public class RegistrationService {
 
     public void register(Employee employee) throws SQLException {
         registrationDAO.registerEmployee(employee);
+    }
+
+    public void register(Administrator administrator) throws SQLException {
+        registrationDAO.registerAdmin(administrator);
     }
 }

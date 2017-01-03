@@ -3,6 +3,7 @@
  */
 
 export class Employee{
+    companyID;
     constructor(public firstName:string , public lastName:string, public userName:string, public position:string ){
         
     }

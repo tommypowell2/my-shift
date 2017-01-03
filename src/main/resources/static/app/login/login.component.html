@@ -17,6 +17,8 @@
         <span class="span"><label>Password</label></span>
         <input name="password" type="password" [(ngModel)]="user.password" class="form-control" required>
       </div>
-      <button (click)="login()" class="btn btn-default" [disabled]="!loginForm.form.valid">Submit</button>
+      <button (click)="login()" class="btn btn-default" [disabled]="!loginForm.form.valid">Login</button>
     </form>
+    <button (click)="registerAdmin()" class="btn btn-default">Register</button>
+    <button (click)="showSchedule()" class="btn btn-default">Test</button>
 </div>

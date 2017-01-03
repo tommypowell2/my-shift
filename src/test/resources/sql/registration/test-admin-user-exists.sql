@@ -1,0 +1,1 @@
+INSERT INTO shift_admin_users (username, password, companyid, enabled) VALUES ('tuser1', 'xyz', 0, TRUE);

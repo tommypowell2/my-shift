@@ -2,7 +2,6 @@ package com.powell.dao;
 
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -23,8 +22,6 @@ import static org.junit.Assert.*;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Sql(value = {"classpath:LoginDAOJDBCTest.sql"})
-@Ignore
 public class AdminDAOJDBCTest {
 
     @Autowired
@@ -36,20 +33,15 @@ public class AdminDAOJDBCTest {
     @Test
     public void dataSourceIsNull() {
         expectedException.expect(NullPointerException.class);
-        new AdminDAO(null);
+        new AdminDAOJDBC(null);
     }
 
     @Test
-    public void userNotValidated() throws SQLException {
-        AdminDAO adminDAO = new AdminDAO(dataSource);
-        assertEquals(false, adminDAO.validateUser("username", "password"));
-    }
-
-    @Test
-    @Sql(value = {"classpath:LoginDAOJDBCTest.sql", "classpath:userValidated.sql"})
-    public void userValidated() throws SQLException {
-        AdminDAO adminDAO = new AdminDAO(dataSource);
-        assertEquals(true, adminDAO.validateUser("username", "password"));
+    @Sql(value = {"classpath:sql/registration/test-admin-get-company-id-successfully.sql"})
+    public void getCompanyID() throws SQLException {
+        AdminDAOJDBC adminDAOJDBC = new AdminDAOJDBC(dataSource);
+        int companyID = adminDAOJDBC.getCompanyID("username");
+        assertEquals(1, companyID);
     }
 
 }

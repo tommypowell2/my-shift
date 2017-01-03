@@ -35,10 +35,10 @@ public class EmployeeRegistrationController {
         if (message == null) {
             try {
                 registrationService.register(employee);
-                message = "{messageType:\"success\", message: \"Registration successful\", employeeID:\"" + employee.getEmployeeID() + "\"}";
+                message = "{\"messageType\":\"success\", \"message\": \"Registration successful\", \"employeeID\":\"" + employee.getEmployeeID() + "\"}";
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage());
-                message = "{messageType:\"error\", message: \"Can not save user to database, possible duplicate user name.\"}";
+                message = "{\"messageType\":\"error\", \"message\": \"Can not save user to database, possible duplicate user name.\"}";
             }
         }
         return message;
@@ -51,7 +51,7 @@ public class EmployeeRegistrationController {
 
     private String getValidationError(Employee employee) {
         String error = null;
-        String baserError = "{messageType:\"error\", message: \"field is not valid.\"}";
+        String baserError = "{\"messageType\":\"error\", \"message\": \"field is not valid.\"}";
         if (StringUtils.isBlank(employee.getFirstName())) {
             error = baserError.replace("field", "First name");
         } else if (StringUtils.isBlank(employee.getLastName())) {
@@ -60,6 +60,8 @@ public class EmployeeRegistrationController {
             error = baserError.replace("field", "User name");
         } else if (StringUtils.isBlank(employee.getPosition())) {
             error = baserError.replace("field", "Position");
+        } else if (employee.getCompanyID() <= 0) {
+            error = baserError.replace("field", "Company ID");
         }
         return error;
     }

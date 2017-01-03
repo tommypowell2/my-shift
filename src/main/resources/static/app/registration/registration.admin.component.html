@@ -1,0 +1,33 @@
+<div class="container">
+    <h2>{{title}}</h2>
+    <form #registerAdminForm="ngForm">
+        <div [hidden]="!showError"
+             class="alert alert-danger">
+            {{message}}
+        </div>
+        <div class="form-group">
+            <span class="span"><label>First Name</label></span>
+            <input name="firstName" [(ngModel)]="administrator.firstName" class="form-control">
+        </div>
+        <div class="form-group">
+            <span class="span"><label>Last Name</label></span>
+            <input name="lastName" [(ngModel)]="administrator.lastName" class="form-control">
+        </div>
+        <div class="form-group">
+            <span class="span"><label>User Name</label></span>
+            <input name="userName" [(ngModel)]="administrator.userName" class="form-control">
+        </div>
+        <div class="form-group">
+            <span class="span"><label>Password</label></span>
+            <input name="password" [(ngModel)]="administrator.password" class="form-control" type="password">
+        </div>
+        <div class="form-group">
+            <span class="span"><label>Company Name</label></span>
+            <input name="company" [(ngModel)]="administrator.company.companyName" class="form-control">
+        </div>
+        <button (click)="registerAdmin()" class="btn btn-default" [disabled]="!registerAdminForm.form.valid">Submit
+        </button>
+    </form>
+    <button (click)="cancel()" class="btn btn-default">Cancel</button>
+
+</div>

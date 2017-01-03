@@ -7,6 +7,8 @@ import {HomePageComponent} from "./login/home.page.component";
 import {Registration} from "./registration/registration.component";
 import {Login} from "./login/login.component";
 import {LoggedInGuard} from "./login/loggedin.guard.component";
+import {AdminRegistration} from "./registration/registration.admin.component";
+import {EmployeeScheduleComponent} from "./scheduler/employee.schedule";
 
 
 const appRoutes: Routes = [
@@ -20,7 +22,11 @@ const appRoutes: Routes = [
         component: Login
     },
     {
-        path: 'success',
+        path: 'registerAdmin',
+        component: AdminRegistration
+    },
+    {
+        path: 'success/:username',
         component: HomePageComponent,
         canActivate: [LoggedInGuard]
     },
@@ -28,6 +34,10 @@ const appRoutes: Routes = [
         path: 'employeeRegistration',
         component: Registration,
         canActivate: [LoggedInGuard]
+    },
+    {
+        path: 'employeeSchedule',
+        component: EmployeeScheduleComponent
     }
 ];
 
