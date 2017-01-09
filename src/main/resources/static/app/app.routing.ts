@@ -3,7 +3,7 @@
  */
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {HomePageComponent} from "./login/home.page.component";
+import {AdminHomePageComponent} from "./login/admin.home.page.component";
 import {Registration} from "./registration/registration.component";
 import {Login} from "./login/login.component";
 import {LoggedInGuard} from "./login/loggedin.guard.component";
@@ -25,9 +25,14 @@ const appRoutes: Routes = [
         path: 'registerAdmin',
         component: AdminRegistration
     },
+    // {
+    //     path: 'success/:username',
+    //     component: AdminHomePageComponent,
+    //     canActivate: [LoggedInGuard]
+    // },
     {
-        path: 'success/:username',
-        component: HomePageComponent,
+        path: 'admin/:username',
+        component: AdminHomePageComponent,
         canActivate: [LoggedInGuard]
     },
     {

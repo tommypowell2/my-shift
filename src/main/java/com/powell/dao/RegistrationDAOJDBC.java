@@ -1,6 +1,7 @@
 package com.powell.dao;
 
 import com.powell.domain.Administrator;
+import com.powell.domain.Company;
 import com.powell.domain.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,23 +27,39 @@ public class RegistrationDAOJDBC implements RegistrationDAO {
     public void registerEmployee(Employee employee) throws SQLException {
         String insertEmployeeSQL = "INSERT INTO Employee (FirstName, LastName, UserName, POSITION, CompanyID)" +
                 "VALUES (? , ?, ?, ?, ?)";
+        String insertAuthSQL = "INSERT INTO authorities (username, authority) values (?, ?)";
         String selectIDSQL = "select employeeID from employee where username = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertEmployeeSQL);
-             PreparedStatement preparedStatement1 = connection.prepareStatement(selectIDSQL)) {
-            preparedStatement.setString(1, employee.getFirstName());
-            preparedStatement.setString(2, employee.getLastName());
-            preparedStatement.setString(3, employee.getUserName());
-            preparedStatement.setString(4, employee.getPosition());
-            preparedStatement.setInt(5, employee.getCompanyID());
-            preparedStatement.execute();
-
-            preparedStatement1.setString(1, employee.getUserName());
-            ResultSet resultSet = preparedStatement1.executeQuery();
-            if (resultSet.next()) {
-                employee.setEmployeeID(resultSet.getLong("EmployeeID"));
-            }
+             PreparedStatement insertEmployeeStatement = connection.prepareStatement(insertEmployeeSQL);
+             PreparedStatement insertAuthStatement = connection.prepareStatement(insertAuthSQL);
+             PreparedStatement selectIDStatement1 = connection.prepareStatement(selectIDSQL)) {
+            insertEmployee(employee, insertEmployeeStatement);
+            insertEmployeeAuthorization(employee, insertAuthStatement);
+            setEmployeeIdFromDatabase(employee, selectIDStatement1);
         }
+    }
+
+    private void setEmployeeIdFromDatabase(Employee employee, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, employee.getUserName());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            employee.setEmployeeID(resultSet.getLong("EmployeeID"));
+        }
+    }
+
+    private void insertEmployeeAuthorization(Employee employee, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, employee.getUserName());
+        preparedStatement.setString(2, "employee");
+        preparedStatement.execute();
+    }
+
+    private void insertEmployee(Employee employee, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, employee.getFirstName());
+        preparedStatement.setString(2, employee.getLastName());
+        preparedStatement.setString(3, employee.getUserName());
+        preparedStatement.setString(4, employee.getPosition());
+        preparedStatement.setInt(5, employee.getCompanyID());
+        preparedStatement.execute();
     }
 
     @Override
@@ -50,7 +67,7 @@ public class RegistrationDAOJDBC implements RegistrationDAO {
         String authoritySQL = "insert into authorities(username,authority) values(?,'admin')";
         String companyInsertSQL = "insert into company (name) values(?)";
         String companySelectSQL = "select id from company where name = ?";
-        String userSQL = "insert into shift_admin_users(username,password,companyid,enabled) values(?,?,?,?)";
+        String userSQL = "insert into shift_user (username,password,companyid,enabled) values(?,?,?,?)";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement authorityStatement = connection.prepareStatement(authoritySQL);
@@ -58,32 +75,44 @@ public class RegistrationDAOJDBC implements RegistrationDAO {
              PreparedStatement companySelectStatement = connection.prepareStatement(companySelectSQL);
              PreparedStatement userStatement = connection.prepareStatement(userSQL)) {
 
-            companyInsertStatement.setString(1, administrator.getCompany().getCompanyName());
-            companyInsertStatement.execute();
+            insertCompany(administrator, companyInsertStatement);
+            setAdminCompanyID(administrator, companySelectStatement);
+            setAdminAuth(administrator, authorityStatement);
+            insertAdminUser(administrator, userStatement);
 
-            companySelectStatement.setString(1, administrator.getCompany().getCompanyName());
-            ResultSet companyResultSet = companySelectStatement.executeQuery();
-            int userCompanyID = 0;
-            while (companyResultSet.next()) {
-                userCompanyID = companyResultSet.getInt("id");
-            }
-
-            authorityStatement.setString(1, administrator.getUserName());
-            authorityStatement.execute();
-
-            userStatement.setString(1, administrator.getUserName());
-            userStatement.setString(2, administrator.getPassword());
-            userStatement.setInt(3, userCompanyID);
-            userStatement.setBoolean(4, true);
-            userStatement.execute();
-
-        } catch (SQLIntegrityConstraintViolationException e){
+        } catch (SQLIntegrityConstraintViolationException e) {
             e.printStackTrace();
             throw new SQLIntegrityConstraintViolationException(e.getMessage());
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException(e.getMessage());
         }
 
+    }
+
+    private void insertAdminUser(Administrator administrator, PreparedStatement userStatement) throws SQLException {
+        userStatement.setString(1, administrator.getUserName());
+        userStatement.setString(2, administrator.getPassword());
+        userStatement.setInt(3, administrator.getCompany().getCompanyID());
+        userStatement.setBoolean(4, true);
+        userStatement.execute();
+    }
+
+    private void setAdminAuth(Administrator administrator, PreparedStatement authorityStatement) throws SQLException {
+        authorityStatement.setString(1, administrator.getUserName());
+        authorityStatement.execute();
+    }
+
+    private void setAdminCompanyID(Administrator administrator, PreparedStatement companySelectStatement) throws SQLException {
+        companySelectStatement.setString(1, administrator.getCompany().getCompanyName());
+        ResultSet companyResultSet = companySelectStatement.executeQuery();
+        while (companyResultSet.next()) {
+            administrator.setCompany(new Company(administrator.getCompany().getCompanyName(), companyResultSet.getInt("id")));
+        }
+    }
+
+    private void insertCompany(Administrator administrator, PreparedStatement companyInsertStatement) throws SQLException {
+        companyInsertStatement.setString(1, administrator.getCompany().getCompanyName());
+        companyInsertStatement.execute();
     }
 }

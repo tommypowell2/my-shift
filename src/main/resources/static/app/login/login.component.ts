@@ -23,7 +23,7 @@ export class Login {
     submitted = false;
     reply;
 
-    constructor(loginService:LoginService, registrationService:RegistrationService, router:Router) {
+    constructor(loginService: LoginService, registrationService: RegistrationService, router: Router) {
         this.loginService = loginService;
         this.registrationService = registrationService;
         this.router = router;
@@ -38,9 +38,11 @@ export class Login {
                     this.foundUser = true;
                     localStorage.setItem('username', this.user.username);
                     localStorage.setItem('userrole', reply.json().roles);
-                    console.log(reply.json().roles)
+                    console.log(reply);
                     this.loginService.setLoggedIn(true);
-                    this.router.navigate(['success/'+this.user.username]);
+                    if (reply.json().roles[0] == 'admin') {
+                        this.router.navigate(['admin/' + this.user.username]);
+                    }
                 }
             },
             () => {
@@ -49,15 +51,13 @@ export class Login {
         );
     }
 
-    showSchedule(){
+    showSchedule() {
         this.router.navigate(['employeeSchedule']);
     }
 
-    registerAdmin(){
+    registerAdmin() {
         this.router.navigate(['registerAdmin']);
     }
-
-
 
 
     get diagnostic() {

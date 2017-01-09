@@ -3,6 +3,7 @@ package com.powell.dao;
 import com.powell.domain.Administrator;
 import com.powell.domain.Company;
 import com.powell.domain.Employee;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,58 +34,80 @@ public class RegistrationDAOJDBCTest {
     @Autowired
     private DataSource dataSource;
 
-    @Mock
+    private RegistrationDAO registrationDAO;
+
     Company company;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+    private final Employee employee = new Employee("test", "user", "tuser", "Test Dummy", 1);
+    private final String readablePassword = "xyz";
+    private Administrator administrator;
+
+    @Before
+    public void setUp(){
+        registrationDAO = new RegistrationDAOJDBC(dataSource);
+        company = new Company("My Company", 1);
+        administrator = new Administrator("test", "user", "tuser", readablePassword, company);
+    }
 
     @Sql("classpath:test-registration.sql")
     @Test
     public void employeeRegistrationSucceeds() throws SQLException {
-        Employee employee = new Employee("test", "user", "tuser", "Test Dummy", 1);
-        RegistrationDAO registrationDAO = new RegistrationDAOJDBC(dataSource);
         registrationDAO.registerEmployee(employee);
-        String sql = "select employeeID, companyID from employee where username = 'tuser'";
+        String sql = "select employeeID, companyID, authority " +
+                "from employee e, authorities a " +
+                "where username = 'tuser' " +
+                "and e.username = a.username";
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             long returnedEmployeeID = 0;
             int returnedCompanyID = 0;
+            String returnedAuthority = null;
             if (resultSet.next()) {
                 returnedEmployeeID = resultSet.getLong("EmployeeID");
                 returnedCompanyID = resultSet.getInt("CompanyID");
+                returnedAuthority = resultSet.getString("Authority");
             }
             assertNotNull(employee.getEmployeeID());
             assertEquals(new Long(returnedEmployeeID), employee.getEmployeeID());
             assertEquals(returnedCompanyID, employee.getCompanyID());
+            assertEquals("employee", returnedAuthority);
         }
     }
-
 
     @Sql(value = {"classpath:test-registration.sql", "classpath:sql/registration/test-user-exists-registration.sql"})
     @Test
     public void registrationFailsIfUserAlreadyExists() throws SQLException {
         expectedException.expect(SQLException.class);
-        Employee employee = new Employee("test", "user", "tuser", "Test Dummy", 1);
-        RegistrationDAO registrationDAO = new RegistrationDAOJDBC(dataSource);
         registrationDAO.registerEmployee(employee);
     }
 
-//    @Sql("classpath:sql/registration/test-admin-registered-successfully.sql")
+    @Sql(value = {"classpath:sql/registration/test-admin-registered-successfully.sql","classpath:sql/registration/test-admin-auth-exists.sql"})
+    @Test
+    public void adminRegistrationAuthorityExists() throws SQLException {
+        expectedException.expect(SQLIntegrityConstraintViolationException.class);
+        registrationDAO.registerAdmin(administrator);
+    }
+
+//    @Sql(value = {"classpath:sql/registration/test-admin-registered-successfully.sql"})
+    @Test
+    public void adminRegistrationUserExists() throws SQLException {
+        expectedException.expect(SQLException.class);
+        registrationDAO.registerAdmin(administrator);
+    }
+
+//    @Sql(value = {"classpath:sql/registration/test-admin-registered-successfully.sql"})
     @Test
     public void adminRegistrationSucceeds() throws SQLException {
-        String readablePassword = "xyz";
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        Administrator administrator = new Administrator("test", "user", "tuser", readablePassword, company);
-        RegistrationDAO registrationDAO = new RegistrationDAOJDBC(dataSource);
-        when(company.getCompanyName()).thenReturn("My Company");
         registrationDAO.registerAdmin(administrator);
         String sql = "select authority, password, company.id " +
-                "from authorities,  shift_admin_users, company " +
+                "from authorities,  shift_user, company " +
                 "where authorities.username = 'tuser' " +
-                "and authorities.username = shift_admin_users.username " +
-                "and shift_admin_users.companyid = company.id";
+                "and authorities.username = shift_user.username " +
+                "and shift_user.companyid = company.id";
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
@@ -97,30 +120,10 @@ public class RegistrationDAOJDBCTest {
                 returnedCompanyID = resultSet.getInt("id");
             }
             String expectedAuthority = "admin";
-            int expectedCompanyID = 0;
+            int expectedCompanyID = 1;
             assertEquals(expectedAuthority, returnedAuthority);
             assertEquals(true, bCryptPasswordEncoder.matches(readablePassword, returnedPassword));
             assertEquals(expectedCompanyID, returnedCompanyID);
         }
-    }
-
-    @Sql(value = {"classpath:sql/registration/test-admin-registered-successfully.sql","classpath:sql/registration/test-admin-auth-exists.sql"})
-    @Test
-    public void adminRegistrationAuthorityExists() throws SQLException {
-        expectedException.expect(SQLIntegrityConstraintViolationException.class);
-        Administrator administrator = new Administrator("test", "user", "tuser", "xyz", company);
-        RegistrationDAO registrationDAO = new RegistrationDAOJDBC(dataSource);
-        when(company.getCompanyName()).thenReturn("My Company");
-        registrationDAO.registerAdmin(administrator);
-    }
-
-    @Sql(value = {"classpath:sql/registration/test-admin-registered-successfully.sql","classpath:sql/registration/test-admin-user-exists.sql"})
-    @Test
-    public void adminRegistrationUserExists() throws SQLException {
-        expectedException.expect(SQLException.class);
-        Administrator administrator = new Administrator("test", "user", "tuser1", "xyz", company);
-        RegistrationDAO registrationDAO = new RegistrationDAOJDBC(dataSource);
-        when(company.getCompanyName()).thenReturn("My Company");
-        registrationDAO.registerAdmin(administrator);
     }
 }

@@ -44,7 +44,7 @@ public class AdminDAOJDBC implements AdminDAO {
 
     @Override
     public int getCompanyID(String username) throws SQLException {
-        String sql = "select companyid from shift_admin_users where username = ?";
+        String sql = "select companyid from shift_user where username = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);

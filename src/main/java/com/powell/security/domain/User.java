@@ -13,17 +13,26 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="SHIFT_ADMIN_USERS")
+@Table(name="SHIFT_USER")
 public class User implements Serializable {
-    @Id @Column(name="ID")
+    @Id @Column(name="USERID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userID;
+
+    @Column(name="firstname")
+    private String firstname;
+
+    @Column(name="lastname")
+    private String lastname;
 
     @Column(name="username")
     private String username;
 
     @Column(name="password")
     private String password;
+
+    @Column(name="position")
+    private String position;
 
     @Column
     private int companyID;
@@ -32,24 +41,20 @@ public class User implements Serializable {
     private boolean enabled;
 
     @OneToMany
-    @JoinColumn(name="APP_USER_ID", referencedColumnName="ID")
-    private List<UserRole> roles;
-
-    @OneToMany
     @JoinColumn(name="USERNAME", referencedColumnName="USERNAME")
     private List<Authority> userAuthorities;
 
     public User() { }
 
     public User(Long id, String username, String password, List<Authority> authorities) {
-        this.id = id;
+        this.userID = id;
         this.username = username;
         this.password = password;
         this.userAuthorities = authorities;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserID() {
+        return userID;
     }
 
     public String getUsername() {
@@ -68,9 +73,17 @@ public class User implements Serializable {
         return enabled;
     }
 
-//    public List<UserRole> getRoles() {
-//        return roles;
-//    }
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getPosition() {
+        return position;
+    }
 
     public List<Authority> getUserAuthorities() {
         return userAuthorities;

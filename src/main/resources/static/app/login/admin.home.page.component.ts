@@ -11,8 +11,8 @@ import {RegistrationService} from '../service/registration-service'
     selector: 'home-page',
     templateUrl: 'app/login/home.page.component.html'
 })
-export class HomePageComponent {
-    title = 'Welcome to the landing page';
+export class AdminHomePageComponent {
+    title;
     employee = new Employee('','','','');
     router;
     registrationService;
@@ -35,6 +35,7 @@ export class HomePageComponent {
         this.router = router;
         this.registrationService = registrationService;
         this.username = ac.snapshot.params['username'];
+        this.title = 'Hello ' + this.username + ', Welcome to the admin landing page';
     }
 
     showRegistration() {

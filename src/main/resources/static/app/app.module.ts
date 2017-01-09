@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { AppComponent }  from './app.component';
 import { Login } from './login/login.component';
-import { HomePageComponent } from './login/home.page.component';
+import { AdminHomePageComponent } from './login/admin.home.page.component';
 import {Registration} from  './registration/registration.component';
 import {Logger} from "./util/logger.service";
 import { HttpModule }    from '@angular/http';
@@ -25,7 +25,7 @@ import {EmployeeScheduleComponent} from "./scheduler/employee.schedule";
     declarations: [
         AppComponent,
         Login,
-        HomePageComponent,
+        AdminHomePageComponent,
         Registration,
         AdminRegistration,
         EmployeeScheduleComponent
