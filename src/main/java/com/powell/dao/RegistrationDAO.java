@@ -2,6 +2,7 @@ package com.powell.dao;
 
 import com.powell.domain.Administrator;
 import com.powell.domain.Employee;
+import com.powell.security.domain.User;
 
 import java.sql.SQLException;
 
@@ -10,7 +11,7 @@ import java.sql.SQLException;
  * -_-
  */
 public interface RegistrationDAO {
-    void registerEmployee(Employee employee) throws SQLException;
+    void registerEmployee(User employee) throws SQLException;
 
-    void registerAdmin(Administrator administrator) throws SQLException;
+    void registerAdmin(User administrator) throws SQLException;
 }

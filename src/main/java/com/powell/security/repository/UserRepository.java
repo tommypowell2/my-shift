@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("select u from User u left join fetch u.userAuthorities r where u.username=:username")
-    public Optional<User> findByUsername(@Param("username") String username);
+    @Query("select u from User u left join fetch u.userAuthorities r where u.userName=:userName")
+    public Optional<User> findByUsername(@Param("userName") String userName);
 }

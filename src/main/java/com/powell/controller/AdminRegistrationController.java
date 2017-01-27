@@ -1,8 +1,8 @@
 package com.powell.controller;
 
 import com.google.gson.Gson;
-import com.powell.domain.Administrator;
 import com.powell.domain.AdministratorRegistrationWrapper;
+import com.powell.security.domain.User;
 import com.powell.service.RegistrationService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -28,11 +28,11 @@ public class AdminRegistrationController {
 
     @RequestMapping(value = "/registerAdmin")
     public String registerAdmin(HttpServletRequest request) throws IOException {
-        Administrator administrator = extractAdmin(request);
+        User administrator = extractAdmin(request);
         String message = getValidationError(administrator);
         if (message == null) {
             try {
-                registrationService.register(administrator);
+                registrationService.registerAdmin(administrator);
                 message = "{\"messageType\":\"success\", \"message\": \"Registration successful\", \"companyID\":\""+ administrator.getCompany().getCompanyID() + "\"}";
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage());
@@ -42,12 +42,12 @@ public class AdminRegistrationController {
         return message;
     }
 
-    private Administrator extractAdmin(HttpServletRequest request) throws IOException {
+    private User extractAdmin(HttpServletRequest request) throws IOException {
         AdministratorRegistrationWrapper wrapper = new Gson().fromJson(request.getReader(), AdministratorRegistrationWrapper.class);
         return wrapper.getAdministrator();
     }
 
-    private String getValidationError(Administrator administrator) {
+    private String getValidationError(User administrator) {
         String error = null;
         String baserError = "{\"messageType\":\"error\", \"message\": \"field is not valid.\"}";
         if (StringUtils.isBlank(administrator.getFirstName())) {

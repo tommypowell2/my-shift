@@ -1,16 +1,13 @@
 package com.powell.security.domain;
 
+import com.powell.domain.Company;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="SHIFT_USER")
@@ -20,13 +17,13 @@ public class User implements Serializable {
     private Long userID;
 
     @Column(name="firstname")
-    private String firstname;
+    private String firstName;
 
     @Column(name="lastname")
-    private String lastname;
+    private String lastName;
 
     @Column(name="username")
-    private String username;
+    private String userName;
 
     @Column(name="password")
     private String password;
@@ -44,21 +41,41 @@ public class User implements Serializable {
     @JoinColumn(name="USERNAME", referencedColumnName="USERNAME")
     private List<Authority> userAuthorities;
 
+    @Transient
+    private Company company;
+
     public User() { }
 
-    public User(Long id, String username, String password, List<Authority> authorities) {
+    public User(Long id, String userName, String password, List<Authority> authorities) {
         this.userID = id;
-        this.username = username;
+        this.userName = userName;
         this.password = password;
         this.userAuthorities = authorities;
+    }
+
+    public User(String firstName, String lastName, String username, String password, Company company, String position) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = username;
+        if (StringUtils.isBlank(password)) {
+            this.password = null;
+        } else {
+            this.password = new BCryptPasswordEncoder().encode(password);
+        }
+        this.company = company;
+        this.position = position;
     }
 
     public Long getUserID() {
         return userID;
     }
 
-    public String getUsername() {
-        return username;
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public String getUserName() {
+        return this.userName;
     }
 
     public String getPassword() {
@@ -69,16 +86,22 @@ public class User implements Serializable {
         return companyID;
     }
 
+    public Company getCompany(){return company; }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getPosition() {

@@ -16,6 +16,10 @@
             <input name="userName" [(ngModel)]="employee.userName" class="form-control">
         </div>
         <div class="form-group">
+            <span class="span"><label>User Password</label></span>
+            <input name="password"   type="password" [(ngModel)]="employee.password" class="form-control">
+        </div>
+        <div class="form-group">
             <span class="span"><label>Posistion</label></span>
             <select [(ngModel)]="employee.position" name="positions">
                 <option *ngFor="let position of positions" [ngValue]="position.name">{{position.name}}</option>

@@ -27,6 +27,8 @@ CREATE TABLE shift_user
     companyid INTEGER,
     enabled BOOLEAN
 );
+ALTER TABLE shift_user ADD CONSTRAINT user_name_companyid UNIQUE (username, companyid);
+
 CREATE TABLE user_role
 (
     app_user_id INTEGER NOT NULL,

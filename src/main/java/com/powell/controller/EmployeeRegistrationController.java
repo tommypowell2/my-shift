@@ -3,6 +3,7 @@ package com.powell.controller;
 import com.google.gson.Gson;
 import com.powell.domain.EmployeeWrapper;
 import com.powell.domain.Employee;
+import com.powell.security.domain.User;
 import com.powell.service.RegistrationService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -30,12 +31,12 @@ public class EmployeeRegistrationController {
 
     @RequestMapping("/registerEmployee")
     public String registerEmployee(HttpServletRequest request) throws IOException {
-        Employee employee = extractEmployee(request);
+        User employee = extractEmployee(request);
         String message = getValidationError(employee);
         if (message == null) {
             try {
                 registrationService.register(employee);
-                message = "{\"messageType\":\"success\", \"message\": \"Registration successful\", \"employeeID\":\"" + employee.getEmployeeID() + "\"}";
+                message = "{\"messageType\":\"success\", \"message\": \"Registration successful\", \"employeeID\":\"" + employee.getUserID() + "\"}";
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage());
                 message = "{\"messageType\":\"error\", \"message\": \"Can not save user to database, possible duplicate user name.\"}";
@@ -44,12 +45,12 @@ public class EmployeeRegistrationController {
         return message;
     }
 
-    private Employee extractEmployee(HttpServletRequest request) throws IOException {
+    private com.powell.security.domain.User extractEmployee(HttpServletRequest request) throws IOException {
         EmployeeWrapper wrapper = new Gson().fromJson(request.getReader(), EmployeeWrapper.class);
         return wrapper.getEmployee();
     }
 
-    private String getValidationError(Employee employee) {
+    private String getValidationError(User employee) {
         String error = null;
         String baserError = "{\"messageType\":\"error\", \"message\": \"field is not valid.\"}";
         if (StringUtils.isBlank(employee.getFirstName())) {

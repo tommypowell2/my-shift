@@ -40,8 +40,9 @@ public class RegistrationDAOJDBCTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-    private final Employee employee = new Employee("test", "user", "tuser", "Test Dummy", 1);
     private final String readablePassword = "xyz";
+    private Employee employee;
+
     private Administrator administrator;
 
     @Before
@@ -49,32 +50,7 @@ public class RegistrationDAOJDBCTest {
         registrationDAO = new RegistrationDAOJDBC(dataSource);
         company = new Company("My Company", 1);
         administrator = new Administrator("test", "user", "tuser", readablePassword, company);
-    }
-
-    @Sql("classpath:test-registration.sql")
-    @Test
-    public void employeeRegistrationSucceeds() throws SQLException {
-        registrationDAO.registerEmployee(employee);
-        String sql = "select employeeID, companyID, authority " +
-                "from employee e, authorities a " +
-                "where username = 'tuser' " +
-                "and e.username = a.username";
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            long returnedEmployeeID = 0;
-            int returnedCompanyID = 0;
-            String returnedAuthority = null;
-            if (resultSet.next()) {
-                returnedEmployeeID = resultSet.getLong("EmployeeID");
-                returnedCompanyID = resultSet.getInt("CompanyID");
-                returnedAuthority = resultSet.getString("Authority");
-            }
-            assertNotNull(employee.getEmployeeID());
-            assertEquals(new Long(returnedEmployeeID), employee.getEmployeeID());
-            assertEquals(returnedCompanyID, employee.getCompanyID());
-            assertEquals("employee", returnedAuthority);
-        }
+        employee = new Employee("test", "user", "tuser1", readablePassword, "Test Dummy", company);
     }
 
     @Sql(value = {"classpath:test-registration.sql", "classpath:sql/registration/test-user-exists-registration.sql"})
@@ -91,19 +67,17 @@ public class RegistrationDAOJDBCTest {
         registrationDAO.registerAdmin(administrator);
     }
 
-//    @Sql(value = {"classpath:sql/registration/test-admin-registered-successfully.sql"})
     @Test
     public void adminRegistrationUserExists() throws SQLException {
         expectedException.expect(SQLException.class);
         registrationDAO.registerAdmin(administrator);
     }
 
-//    @Sql(value = {"classpath:sql/registration/test-admin-registered-successfully.sql"})
     @Test
     public void adminRegistrationSucceeds() throws SQLException {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         registrationDAO.registerAdmin(administrator);
-        String sql = "select authority, password, company.id " +
+        String sql = "select * " +
                 "from authorities,  shift_user, company " +
                 "where authorities.username = 'tuser' " +
                 "and authorities.username = shift_user.username " +
@@ -113,17 +87,71 @@ public class RegistrationDAOJDBCTest {
              ResultSet resultSet = statement.executeQuery(sql)) {
             String returnedAuthority = "";
             String returnedPassword = "";
+            String returnedFirstName = "";
+            String returnedLastName = "";
+            String returnedPosition = "";
             int returnedCompanyID = 0;
             while (resultSet.next()) {
                 returnedAuthority = resultSet.getString("authority");
                 returnedPassword = resultSet.getString("password");
                 returnedCompanyID = resultSet.getInt("id");
+                returnedFirstName = resultSet.getString("firstname");
+                returnedLastName = resultSet.getString("lastname");
+                returnedPosition = resultSet.getString("position");
             }
             String expectedAuthority = "admin";
-            int expectedCompanyID = 1;
             assertEquals(expectedAuthority, returnedAuthority);
             assertEquals(true, bCryptPasswordEncoder.matches(readablePassword, returnedPassword));
-            assertEquals(expectedCompanyID, returnedCompanyID);
+            assertEquals(administrator.getCompany().getCompanyID(), returnedCompanyID);
+            assertEquals(administrator.getFirstName(), returnedFirstName);
+            assertEquals(administrator.getLastName(), returnedLastName);
+            assertEquals(administrator.getPosition(), returnedPosition);
+            assertNotEquals(null, returnedPosition);
+        }
+    }
+
+    @Sql(value = {"classpath:sql/registration/test-employee-registered-successfully.sql"})
+    @Test
+    public void employeeRegistrationSucceeds() throws SQLException {
+        Employee employee = new Employee("test", "user", "tuser2", readablePassword, "Test Dummy", company);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        registrationDAO.registerEmployee(employee);
+        String sql =
+        "select * " +
+                "from authorities , shift_user, company " +
+                "where authorities.username = 'tuser2' " +
+                "and authorities.username = shift_user.username " +
+                "and shift_user.companyid = company.id";
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            String returnedAuthority = "";
+            String returnedPassword = "";
+            int returnedCompanyID = 0;
+            boolean returnedEnabled = false;
+            String returnedFirstName = "";
+            String returnedLastName = "";
+            String returnedPosition = "";
+            while (resultSet.next()) {
+                returnedAuthority = resultSet.getString("authority");
+                returnedPassword = resultSet.getString("password");
+                returnedCompanyID = resultSet.getInt("id");
+                returnedEnabled = resultSet.getBoolean("enabled");
+                returnedFirstName = resultSet.getString("firstname");
+                returnedLastName = resultSet.getString("lastname");
+                returnedPosition = resultSet.getString("position");
+            }
+            String expectedAuthority = "employee";
+            assertEquals(expectedAuthority, returnedAuthority);
+            assertEquals(true, bCryptPasswordEncoder.matches(readablePassword, returnedPassword));
+            assertEquals(employee.getCompany().getCompanyID(), returnedCompanyID);
+            assertNotEquals(0, returnedCompanyID);
+            assertEquals(true, returnedEnabled);
+            assertNotEquals(0L, employee.getUserID().longValue());
+            assertEquals(employee.getFirstName(), returnedFirstName);
+            assertEquals(employee.getLastName(), returnedLastName);
+            assertEquals(employee.getPosition(), returnedPosition);
+            assertNotEquals(null, returnedPosition);
         }
     }
 }

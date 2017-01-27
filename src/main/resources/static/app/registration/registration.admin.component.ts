@@ -13,7 +13,7 @@ import {map} from "rxjs/operator/map";
 })
 
 export class AdminRegistration {
-    title = 'Please register';
+    title = 'Please registerAdmin';
     administrator = new Administrator('', '', '');
     router;
     registrationService;

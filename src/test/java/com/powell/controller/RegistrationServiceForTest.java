@@ -4,6 +4,7 @@ import com.powell.dao.RegistrationDAO;
 import com.powell.domain.Administrator;
 import com.powell.domain.Company;
 import com.powell.domain.Employee;
+import com.powell.security.domain.User;
 import com.powell.service.RegistrationService;
 
 /**
@@ -16,11 +17,11 @@ class RegistrationServiceForTest extends RegistrationService {
         super(registrationDAO);
     }
 
-    public void register(Employee employee) {
-        employee.setEmployeeID(1l);
+    public void register(User employee) {
+        employee.setUserID(1l);
     }
 
-    public void register(Administrator administrator) {
+    public void registerAdmin(User administrator) {
         Company company = new Company("MyCompany", 1);
         administrator.setCompany(company);;
     }
