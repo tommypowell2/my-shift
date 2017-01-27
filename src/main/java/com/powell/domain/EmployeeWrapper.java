@@ -1,6 +1,5 @@
 package com.powell.domain;
 
-import com.powell.security.domain.*;
 import com.powell.security.domain.User;
 
 /**
@@ -16,6 +15,6 @@ public class EmployeeWrapper {
 
     public com.powell.security.domain.User getEmployee() {
         return new User(employee.getFirstName(), employee.getLastName(), employee.getUserName(),
-                employee.getPassword(), employee.getCompany(), employee.getPosition());
+                employee.getPassword(), new Company("", employee.getCompanyID()), employee.getPosition());
     }
 }

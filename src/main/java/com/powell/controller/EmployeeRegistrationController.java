@@ -61,7 +61,7 @@ public class EmployeeRegistrationController {
             error = baserError.replace("field", "User name");
         } else if (StringUtils.isBlank(employee.getPosition())) {
             error = baserError.replace("field", "Position");
-        } else if (employee.getCompanyID() <= 0) {
+        } else if (employee.getCompany().getCompanyID() <= 0) {
             error = baserError.replace("field", "Company ID");
         }
         return error;
