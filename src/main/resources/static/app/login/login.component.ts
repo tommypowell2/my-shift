@@ -42,6 +42,8 @@ export class Login {
                     this.loginService.setLoggedIn(true);
                     if (reply.json().roles[0] == 'admin') {
                         this.router.navigate(['admin/' + this.user.username]);
+                    } else{
+                        this.router.navigate(['employee/'+this.user.username])
                     }
                 }
             },
@@ -49,10 +51,6 @@ export class Login {
             },
             () => console.log("Processing complete")
         );
-    }
-
-    showSchedule() {
-        this.router.navigate(['employeeSchedule']);
     }
 
     registerAdmin() {

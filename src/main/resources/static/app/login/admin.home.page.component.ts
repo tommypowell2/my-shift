@@ -17,6 +17,8 @@ export class AdminHomePageComponent {
     router;
     registrationService;
     hideRegistrationForm = true;
+    registrationError = false;
+    registrationErrorMessage;
     username;
     companyID = 0;
     registeredEmployees;//this will be a list of employees to manage;
@@ -60,9 +62,11 @@ export class AdminHomePageComponent {
                 //need to add code here to handle the reply
                 console.log(reply);
                 if(reply.json().messageType == 'success'){
-
+                    this.hideRegistrationForm = true;
+                    this.registrationError = false;
                 } else {
-
+                    this.registrationErrorMessage = reply.json().message;
+                    this.registrationError = true;
                 }
             }
         );

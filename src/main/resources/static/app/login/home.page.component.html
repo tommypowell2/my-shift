@@ -3,6 +3,10 @@
     <router-outlet></router-outlet>`
     <button (click)="showRegistration()" class="btn btn-default">Add New Employee</button>
     <form [hidden]="hideRegistrationForm" #employeeRegistrationForm="ngForm">
+        <div [hidden]="!registrationError"
+             class="alert alert-danger">
+            {{registrationErrorMessage}}
+        </div>
         <div class="form-group">
             <span class="span"><label>First Name</label></span>
             <input name="firstName" [(ngModel)]="employee.firstName" class="form-control">

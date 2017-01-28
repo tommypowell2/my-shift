@@ -4,6 +4,7 @@ import { FormsModule }   from '@angular/forms';
 import { AppComponent }  from './app.component';
 import { Login } from './login/login.component';
 import { AdminHomePageComponent } from './login/admin.home.page.component';
+import { EmployeeHomePageComponent } from './login/employee.home.page.component';
 import {Registration} from  './registration/registration.component';
 import {Logger} from "./util/logger.service";
 import { HttpModule }    from '@angular/http';
@@ -26,6 +27,7 @@ import {EmployeeScheduleComponent} from "./scheduler/employee.schedule";
         AppComponent,
         Login,
         AdminHomePageComponent,
+        EmployeeHomePageComponent,
         Registration,
         AdminRegistration,
         EmployeeScheduleComponent
