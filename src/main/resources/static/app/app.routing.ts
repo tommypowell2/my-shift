@@ -26,11 +26,6 @@ const appRoutes: Routes = [
         path: 'registerAdmin',
         component: AdminRegistration
     },
-    // {
-    //     path: 'success/:username',
-    //     component: AdminHomePageComponent,
-    //     canActivate: [LoggedInGuard]
-    // },
     {
         path: 'admin/:username',
         component: AdminHomePageComponent,

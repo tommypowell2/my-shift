@@ -81,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/systemjs.config.js",
                         "/typings/**",
                         "/*.css",
+                        "/dist/css/*.css",
                         "/*.json",
                         "/registerAdmin",
                         "/employeeRegistration"

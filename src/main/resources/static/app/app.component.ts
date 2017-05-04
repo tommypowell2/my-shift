@@ -2,7 +2,6 @@
  * Created by tpowell on 7/30/16.
  */
 import {Component} from '@angular/core';
-// import {Login} from './login/login.component';
 
 @Component({
     selector: 'my-app',
