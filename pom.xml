@@ -60,38 +60,38 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!--<execution>-->
-                        <!--<id>exec-npm-run-typings-install</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<configuration>-->
-                            <!--<workingDirectory>${project.basedir}/src/main/resources/static</workingDirectory>-->
-                            <!--<executable>npm</executable>-->
-                            <!--<arguments>-->
-                                <!--<argument>run</argument>-->
-                                <!--<argument>typings</argument>-->
-                                <!--<argument>install</argument>-->
-                                <!--<argument>&#45;&#45;save</argument>-->
-                            <!--</arguments>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>exec</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                    <!--<execution>-->
-                        <!--<id>exec-npm-run-tsc</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<configuration>-->
-                            <!--<workingDirectory>${project.basedir}/src/main/resources/static</workingDirectory>-->
-                            <!--<executable>npm</executable>-->
-                            <!--<arguments>-->
-                                <!--<argument>run</argument>-->
-                                <!--<argument>tsc</argument>-->
-                            <!--</arguments>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>exec</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
+                    <execution>
+                        <id>exec-npm-run-typings-install</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <workingDirectory>${project.basedir}/src/main/resources/static</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>typings</argument>
+                                <argument>install</argument>
+                                <argument>--save</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-npm-run-tsc</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <workingDirectory>${project.basedir}/src/main/resources/static</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>tsc</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
