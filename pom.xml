@@ -7,7 +7,7 @@
     <artifactId>my-shift</artifactId>
     <groupId>com.powell</groupId>
     <!--<packaging>jar</packaging>-->
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
