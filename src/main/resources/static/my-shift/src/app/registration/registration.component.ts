@@ -7,7 +7,7 @@ import {Employee} from '../domain/employee'
 @Component({
     selector: 'employee-registration-page',
     // providers: [EmployeeRegistrationService],
-    templateUrl: 'app/registration/registration.component.html'
+    templateUrl: './registration.component.html'
 })
 export class Registration {
     title = 'Please registerAdmin an employee';

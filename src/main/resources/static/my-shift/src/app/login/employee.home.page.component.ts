@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'employee-home-page',
-    templateUrl: 'app/login/employee.home.page.component.html'
+    templateUrl: './employee.home.page.component.html'
 })
 export class EmployeeHomePageComponent {
     title;

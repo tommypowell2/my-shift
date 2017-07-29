@@ -9,7 +9,7 @@ import {Employee} from  '../domain/employee';
 
 @Component({
     selector: 'employee-schedule',
-    templateUrl: 'app/scheduler/employe.schedule.html'
+    templateUrl: './employe.schedule.html'
 })
 export class EmployeeScheduleComponent {
     title = 'Employees Schedule';

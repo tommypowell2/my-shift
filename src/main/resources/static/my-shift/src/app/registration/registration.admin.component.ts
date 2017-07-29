@@ -9,7 +9,7 @@ import {map} from "rxjs/operator/map";
  */
 @Component({
     selector: 'register-admin-page',
-    templateUrl: 'app/registration/registration.admin.component.html'
+    templateUrl: './registration.admin.component.html'
 })
 
 export class AdminRegistration {

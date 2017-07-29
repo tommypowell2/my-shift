@@ -9,7 +9,7 @@ import {RegistrationService} from '../service/registration-service'
 
 @Component({
     selector: 'home-page',
-    templateUrl: 'app/login/home.page.component.html'
+    templateUrl: './home.page.component.html'
 })
 export class AdminHomePageComponent {
     title;

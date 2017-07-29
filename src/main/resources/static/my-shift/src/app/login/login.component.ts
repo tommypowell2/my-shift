@@ -6,12 +6,12 @@ import {User} from  '../domain/user';
 import {LoginService} from '../service/login-service';
 import {RegistrationService} from '../service/registration-service';
 import {Router} from '@angular/router';
-import {logInfo} from "typings/dist/support/cli";
+// import {logInfo} from "typings/dist/support/cli";
 
 
 @Component({
     selector: 'login-page',
-    templateUrl: 'app/login/login.component.html'
+    templateUrl: './login.component.html'
 })
 export class Login {
     title = 'Login';
