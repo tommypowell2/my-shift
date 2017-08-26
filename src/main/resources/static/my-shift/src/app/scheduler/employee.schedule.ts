@@ -16,64 +16,79 @@ export class EmployeeScheduleComponent {
     router;
     username;
     selectedSchedule;
-    workSchedule = {
-        years: [
-            {
-                id: 2016, months: [
-                {
-                    month: 'August', daysOfMonth: [
-                    {id: 1, dayOfWeek: 'Monday', startTime: "7:00", endTime: "9:00", selected: false},
-                    {id: 2, dayOfWeek: 'Tuesday', startTime: "7:00", endTime: "9:00", selected: false},
-                    {id: 3, dayOfWeek: 'Wednesday', startTime: "7:00", endTime: "9:00", selected: false},
-                    {id: 4, dayOfWeek: 'Thursday', startTime: "7:00", endTime: "9:00", selected: false},
-                    {id: 5, dayOfWeek: 'Friday', startTime: "7:00", endTime: "9:00", selected: false}
-                ]
-                }
-            ]
-            }
-        ]
-    };
 
-    years = this.workSchedule.years;
-    daysOfMonth;
+  calendarOptions:Object = {
+    height: 'parent',
+    fixedWeekCount : false,
+    defaultDate: '2016-09-12',
+    editable: true,
+    eventLimit: true, // allow "more" link when too many events
+    events: [
+      {
+        title: 'All Day Event',
+        start: '2016-09-01'
+      },
+      {
+        title: 'Long Event',
+        start: '2016-09-07',
+        end: '2016-09-10'
+      },
+      {
+        id: 999,
+        title: 'Repeating Event',
+        start: '2016-09-09T16:00:00'
+      },
+      {
+        id: 999,
+        title: 'Repeating Event',
+        start: '2016-09-16T16:00:00'
+      },
+      {
+        title: 'Conference',
+        start: '2016-09-11',
+        end: '2016-09-13'
+      },
+      {
+        title: 'Meeting',
+        start: '2016-09-12T10:30:00',
+        end: '2016-09-12T12:30:00'
+      },
+      {
+        title: 'Lunch',
+        start: '2016-09-12T12:00:00'
+      },
+      {
+        title: 'Meeting',
+        start: '2016-09-12T14:30:00'
+      },
+      {
+        title: 'Happy Hour',
+        start: '2016-09-12T17:30:00'
+      },
+      {
+        title: 'Dinner',
+        start: '2016-09-12T20:00:00'
+      },
+      {
+        title: 'Birthday Party',
+        start: '2016-09-13T07:00:00'
+      },
+      {
+        title: 'Click for Google',
+        url: 'http://google.com/',
+        start: '2016-09-28'
+      }
+    ]
+  };
 
-    weekDays = [
-        {name: 'Mon'},
-        {name: 'Tue'},
-        {name: 'Wed'},
-        {name: 'Thur'},
-        {name: 'Fri'},
-        {name: 'Sat'},
-        {name: 'Sun'}
-    ];
 
 
-    selectedValue = null;
+
 
 
     constructor(router: Router, ac: ActivatedRoute) {
         this.router = router;
         this.username = ac.snapshot.params['username'];
-        for (let year of this.years) {
-            if (year.id == 2016) {
-                for (let month of year.months) {
-                    if (month.month == 'August') {
-                        this.daysOfMonth = month.daysOfMonth;
-                    }
-                }
-
-            }
-        }
     }
 
-    testClick(schedule) {
-        schedule.selected = true;
-        for (let day of this.daysOfMonth) {
-            if (day != schedule) {
-                day.selected = false;
-            }
-        }
-        //this.selectedSchedule = schedule;
-        console.log(schedule)
-    }
 }

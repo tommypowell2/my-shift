@@ -21,10 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String JWT_TOKEN_HEADER_PARAM = "X-Authorization";
-    public static final String APP_RESOURCES = "/app/**";
+    public static final String APP_RESOURCES = "/my-shift/src/**";
     public static final String FORM_BASED_LOGIN_ENTRY_POINT = "/login2";
 
-    public static final String NODE_MODULE_RESOURCES = "/node_modules/**";
+    public static final String NODE_MODULE_RESOURCES = "/my-shift/node_modules/**";
 
     @Autowired
     private AjaxAwareAuthenticationSuccessHandler successHandler;
@@ -78,13 +78,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(APP_RESOURCES,
                         NODE_MODULE_RESOURCES,
-                        "/systemjs.config.js",
                         "/typings/**",
                         "/*.css",
                         "/dist/css/*.css",
                         "/*.json",
                         "/registerAdmin",
-                        "/employeeRegistration"
+                        "/employeeRegistration",
+                        "/my-shift/**"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -93,31 +93,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(buildAjaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
         http.csrf().disable();
-
-        ;
-//                .and()
-//                .logout()
-//                .permitAll();
-
-//        http
-//                .csrf().disable() // We don't need CSRF for JWT based authentication
-//                .exceptionHandling()
-//                .authenticationEntryPoint(this.authenticationEntryPoint)
-//
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(FORM_BASED_LOGIN_ENTRY_POINT).permitAll() // Login end-point
-//                .antMatchers(APP_RESOURCES).permitAll()
-//                .antMatchers(NODE_MODULE_RESOURCES).permitAll()
-//                .antMatchers(TOKEN_REFRESH_ENTRY_POINT).permitAll() // Token refresh end-point
-//                .antMatchers("/console").permitAll() // H2 Console Dash-board - only for testing
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).authenticated() // Protected API End-points
 
     }
 }
